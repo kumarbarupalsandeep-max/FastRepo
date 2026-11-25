@@ -134,22 +134,86 @@ function exportCsv(){
 }
 function download(blob,name){const url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=name;a.click();URL.revokeObjectURL(url)}
 function handleAction(action,button){
- if(action==="review-text"){const textValue=$("#proofreadText")?.value||"";state.draft=textValue;save();const words=textValue.trim()?textValue.trim().split(/\\s+/).length:0;const findings=[];if(/\\s{2,}/.test(textValue))findings.push("More than one space was found.");if(/\\b(very unique|more better|irregardless)\\b/i.test(textValue))findings.push("Review a commonly misused phrase.");if(textValue&&!/[.!?]$/.test(textValue.trim()))findings.push("Consider ending the last sentence with punctuation.");$("#wordCount").textContent=words+" words";$("#writingReport").textContent=findings.length?findings.join(" "):"No basic demo checks were triggered. Review the text manually before sharing."}
+ const itemId=button?.dataset.id||"";
+ if(action==="review-text"){
+  const value=$("#proofreadText")?.value||"";state.draft=value;save();
+  const words=value.trim()?value.trim().split(/\s+/).length:0,findings=[];
+  if(/\s{2,}/.test(value))findings.push("More than one space was found.");
+  if(/\b(very unique|more better|irregardless)\b/i.test(value))findings.push("Review a commonly misused phrase.");
+  if(value&&!/[.!?]$/.test(value.trim()))findings.push("Consider ending the last sentence with punctuation.");
+  $("#wordCount").textContent=words+" words";$("#writingReport").textContent=findings.length?findings.join(" "):"No basic demo checks were triggered. Review the text manually before sharing.";
+ }
  if(action==="save-document"){save();toast("Document saved in this browser")}
- if(action==="bold"||action==="italic"||action==="underline"||action==="heading"){const commands={bold:"bold",italic:"italic",underline:"underline",heading:"formatBlock"};document.execCommand(commands[action],false,action==="heading"?"h2":undefined);$("#docEditor")?.focus();save()}
- if(action==="add-row"){state.rows=(state.rows||8)+1;save();$("#workspace").innerHTML=renderModule()}
- if(action==="download-csv"){const rows=[["","A","B","C","D","E","F"]];for(let i=1;i<=(state.rows||8);i++){const row=[i];["A","B","C","D","E","F"].forEach(c=>row.push(state.cells[c+i]||""));rows.push(row)}const csv=rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(",")).join("\n");download(new Blob([csv],{type:"text/csv"}),"worksuite-grid.csv")}
- if(action==="add-slide"){state.slides.push({title:"New slide "+(state.slides.length+1),body:"Add a supporting thought for your presentation."});state.activeSlide=state.slides.length-1;save();$("#workspace").innerHTML=renderModule()}
- if(action==="present"){document.body.classList.toggle("presentation-mode")}
- if(action==="add-node"){state.nodes.push({id:uid(),label:"New process step"});save();$("#workspace").innerHTML=renderModule()}
- if(action==="clear-board"){const c=$("#whiteboard");c?.getContext("2d").clearRect(0,0,c.width,c.height);toast("Board cleared")}
- if(action==="download-design"){const title=$("#designHeadline")?.textContent||"Your idea";const color=$("#designColor")?.value||"#2563eb";const svg='<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630"><rect width="1200" height="630" rx="24" fill="#f0f5ff"/><rect x="90" y="90" width="1020" height="450" rx="28" fill="#fff"/><text x="150" y="280" font-family="Arial" font-size="58" font-weight="bold" fill="'+color+'">'+esc(title).replace(/[\r\n]/g," ")+'</text><text x="150" y="360" font-family="Arial" font-size="24" fill="#8494ad">Created with WorkSuite Design Canvas</text></svg>';download(new Blob([svg],{type:"image/svg+xml"}),"worksuite-design.svg")}
+ if(["bold","italic","underline","heading"].includes(action)){
+  const commands={bold:"bold",italic:"italic",underline:"underline",heading:"formatBlock"};
+  document.execCommand(commands[action],false,action==="heading"?"h2":undefined);$("#docEditor")?.focus();save();
+ }
+ if(action==="add-row"){state.rows=(state.rows||8)+1;save();refreshWorkspace()}
+ if(action==="download-csv"){
+  const rows=[["","A","B","C","D","E","F"]];
+  for(let i=1;i<=(state.rows||8);i++){const row=[i];["A","B","C","D","E","F"].forEach(c=>row.push(state.cells[c+i]||""));rows.push(row)}
+  const csv=rows.map(row=>row.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(",")).join("\n");
+  download(new Blob([csv],{type:"text/csv"}),"worksuite-grid.csv");
+ }
+ if(action==="add-slide"){state.slides.push({title:"New slide "+(state.slides.length+1),body:"Add a supporting thought for your presentation."});state.activeSlide=state.slides.length-1;save();refreshWorkspace()}
+ if(action==="delete-slide"){if(state.slides.length<=1){toast("Keep at least one slide in the deck.");return}state.slides.splice(state.activeSlide||0,1);state.activeSlide=Math.max(0,(state.activeSlide||0)-1);save();refreshWorkspace()}
+ if(action==="present"){document.body.classList.toggle("presentation-mode");toast(document.body.classList.contains("presentation-mode")?"Presentation view on":"Presentation view off")}
+ if(action==="add-node"){state.nodes.push({id:uid(),label:"New process step"});save();refreshWorkspace()}
+ if(action==="clear-board"){const c=$("#whiteboard");if(c)c.getContext("2d").clearRect(0,0,c.width,c.height);state.board="";save();toast("Board cleared")}
+ if(action==="download-board"){const c=$("#whiteboard");if(c)c.toBlob(blob=>{if(blob)download(blob,"worksuite-whiteboard.png")},"image/png")}
+ if(action==="download-design"){
+  const title=$("#designTitle")?.value||state.designTitle||"Your idea",color=$("#designColor")?.value||state.designColor||"#2563eb";
+  state.designTitle=title;state.designColor=color;save();
+  const safeTitle=esc(title).replace(/[\r\n]/g," ");
+  const svg='<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630"><rect width="1200" height="630" rx="24" fill="#f0f5ff"/><rect x="90" y="90" width="1020" height="450" rx="28" fill="#fff"/><text x="150" y="280" font-family="Poppins,Arial,sans-serif" font-size="58" font-weight="bold" fill="'+color+'">'+safeTitle+'</text><text x="150" y="360" font-family="Poppins,Arial,sans-serif" font-size="24" fill="#8494ad">Created with WorkSuite Design Canvas</text></svg>';
+  download(new Blob([svg],{type:"image/svg+xml"}),"worksuite-design.svg");
+ }
  if(action==="demo-check"){const out=$("#securityResult");if(out)out.textContent="Demo checklist displayed. No real system or file scan was performed."}
+ const byId=(name)=>state[name]||[];
+ const remove=(name)=>{state[name]=byId(name).filter(item=>item.id!==itemId)};
+ if(action==="delete-sent")remove("sent");
+ if(action==="delete-note")remove("notes");
+ if(action==="delete-file")remove("files");
+ if(action==="delete-question")remove("questions");
+ if(action==="delete-bookmark")remove("bookmarks");
+ if(action==="delete-recovery")remove("recovery");
+ if(action==="delete-board-task")remove("tasks");
+ if(action==="delete-record")remove("records");
+ if(action==="delete-block")remove("blocks");
+ if(action==="delete-post")remove("posts");
+ if(action==="cancel-booking")remove("bookings");
+ if(action==="delete-flow")remove("flows");
+ if(action==="delete-device")remove("devices");
+ if(action==="delete-section")remove("sections");
+ if(action==="delete-contact")remove("contacts");
+ if(action==="delete-project-task")remove("tasks");
+ if(action==="delete-field")remove("fields");
+ if(action==="clear-chat"){state.messages=[];toast("Local channel cleared")}
+ if(action==="run-flow"){
+  const flow=state.flows.find(x=>x.id===itemId);
+  if(flow){state.flowRuns=[...(state.flowRuns||[]),{id:uid(),flowId:flow.id,trigger:flow.trigger,action:flow.action,date:new Date().toLocaleString(),result:"Preview only"}];toast("Flow test completed locally. No external service was triggered.")}
+ }
+ if(action==="follow-up"){
+  const contact=state.contacts.find(x=>x.id===itemId);
+  if(contact){contact.followUp="Draft reminder created";contact.followUpAt=new Date().toLocaleString();toast("Follow-up noted for "+contact.name)}
+ }
+ if(action==="export-records"){
+  const rows=[["Name","Details","Status"],...state.records.map(x=>[x.name,x.detail,x.status])];
+  const csv=rows.map(row=>row.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(",")).join("\r\n");
+  download(new Blob([csv],{type:"text/csv"}),"worksuite-records.csv");
+ }
+ if(["delete-sent","delete-note","delete-file","delete-question","delete-bookmark","delete-recovery","delete-board-task","delete-record","delete-block","delete-post","cancel-booking","delete-flow","delete-device","delete-section","delete-contact","delete-project-task","delete-field","clear-chat","run-flow","follow-up"].includes(action)){
+  save();refreshWorkspace();
+ }
 }
+function refreshWorkspace(){$("#workspace").innerHTML=renderModule();setupCanvas()}
 shell();theme();setupCanvas();
 $("#workspace").addEventListener("click",e=>{
- const move=e.target.closest("[data-move]");if(move){const t=state.tasks.find(x=>x.id===move.dataset.move);if(t){t.status=move.dataset.status;save();$("#workspace").innerHTML=renderModule()}return}
- const slide=e.target.closest("[data-slide]");if(slide){state.activeSlide=Number(slide.dataset.slide);$("#workspace").innerHTML=renderModule();return}
+ const mail=e.target.closest("[data-mail-select]");if(mail){state.selectedMail=mail.dataset.mailSelect;save();refreshWorkspace();return}
+ const filePreview=e.target.closest("[data-open-file]");if(filePreview){const file=state.files.find(x=>x.id===filePreview.dataset.openFile);if(file?.dataUrl)window.open(file.dataUrl,"_blank","noopener,noreferrer");else toast("Preview is available only for smaller files added in this browser.");return}
+ const fileDownload=e.target.closest("[data-download-file]");if(fileDownload){const file=state.files.find(x=>x.id===fileDownload.dataset.downloadFile);if(file?.dataUrl){const a=document.createElement("a");a.href=file.dataUrl;a.download=file.name;a.click()}else toast("This file entry has no stored file data. Re-add a smaller file to download it.");return}
+ const move=e.target.closest("[data-move]");if(move){const t=state.tasks.find(x=>x.id===move.dataset.move);if(t){t.status=move.dataset.status;save();refreshWorkspace()}return}
+ const slide=e.target.closest("[data-slide]");if(slide){state.activeSlide=Number(slide.dataset.slide);refreshWorkspace();return}
  const action=e.target.closest("[data-action]");if(action)handleAction(action.dataset.action,action);
 });
 $("#workspace").addEventListener("submit",e=>{
@@ -174,19 +238,31 @@ $("#workspace").addEventListener("submit",e=>{
  if(type==="add-field")state.fields.push({id:uid(),label:d.label,type:d.type});
  if(type==="assistant-chat"){state.chatLog.push({id:uid(),who:"You",text:d.text});let reply="This is a local preview only. Connect an AI provider and backend to generate live answers.";if(/task|plan/i.test(d.text))reply="Try breaking your goal into smaller tasks, then assign each one a due date.";else if(/hello|hi/i.test(d.text))reply="Hello! I’m a sample assistant interface. No AI model is connected yet.";state.chatLog.push({id:uid(),who:"Demo assistant",text:reply})}
  if(type==="add-contact")state.contacts.unshift({id:uid(),name:d.name,company:d.company,email:d.email});
- save();$("#workspace").innerHTML=renderModule();toast("Saved in this browser");
+ if(type==="submit-response"){const answers={};for(const [key,value] of Object.entries(d))if(key.startsWith("answer_"))answers[key.slice(7)]=value;state.responses.unshift({id:uid(),answers,date:new Date().toLocaleString()})}
+ if(type==="app-preview"){const answers={};for(const [key,value] of Object.entries(d))if(key.startsWith("field_"))answers[key.slice(6)]=value;state.formSubmissions.unshift({id:uid(),answers,date:new Date().toLocaleString()})}
+ if(type==="add-post"||type==="announcement"||type==="add-story"){if(!Array.isArray(state.posts))state.posts=[]}
+ save();refreshWorkspace();toast("Saved in this browser");
 });
 $("#workspace").addEventListener("input",e=>{
  if(e.target.id==="docEditor"){state.document=e.target.innerHTML;save()}
  if(e.target.dataset.cell){state.cells[e.target.dataset.cell]=e.target.innerText;save()}
- if(e.target.id==="designHeadline"){/* editable preview */}
+ if(e.target.id==="designTitle"){state.designTitle=e.target.value;const headline=$("#designHeadline");if(headline)headline.textContent=e.target.value;save()}
 });
 $("#workspace").addEventListener("change",e=>{
- if(e.target.id==="filePicker"){Array.from(e.target.files||[]).forEach(f=>state.files.unshift({id:uid(),name:f.name,size:formatSize(f.size)}));save();$("#workspace").innerHTML=renderModule()}
- if(e.target.id==="designColor"){$("#designHeadline")?.style.setProperty("color",e.target.value);$("#designCard")?.style.setProperty("border-top","7px solid "+e.target.value)}
+ if(e.target.id==="filePicker"){
+  Array.from(e.target.files||[]).forEach(file=>{
+   const entry={id:uid(),name:file.name,size:formatSize(file.size),type:file.type,dataUrl:null};
+   state.files.unshift(entry);
+   if(file.size<=850000){const reader=new FileReader();reader.onload=()=>{entry.dataUrl=String(reader.result||"");save()};reader.readAsDataURL(file)}
+  });
+  save();refreshWorkspace()
+ }
+ if(e.target.id==="designColor"){state.designColor=e.target.value;$("#designHeadline")?.style.setProperty("color",e.target.value);$("#designCard")?.style.setProperty("border-top","7px solid "+e.target.value);save()}
+ if(e.target.dataset.projectStatus){const task=state.tasks.find(x=>x.id===e.target.dataset.projectStatus);if(task){task.status=e.target.value;save();refreshWorkspace()}}
+ if(e.target.dataset.deviceStatus){const device=state.devices.find(x=>x.id===e.target.dataset.deviceStatus);if(device){device.status=e.target.value;save();refreshWorkspace()}}
 });
 function formatSize(bytes){if(bytes<1024)return bytes+" B";if(bytes<1048576)return (bytes/1024).toFixed(1)+" KB";return (bytes/1048576).toFixed(1)+" MB"}
-function setupCanvas(){const c=$("#whiteboard");if(!c)return;const ctx=c.getContext("2d");ctx.strokeStyle="#2563eb";ctx.lineWidth=3;ctx.lineCap="round";let drawing=false;function pos(e){const r=c.getBoundingClientRect();return{x:(e.clientX-r.left)*c.width/r.width,y:(e.clientY-r.top)*c.height/r.height}}c.addEventListener("pointerdown",e=>{drawing=true;const p=pos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);c.setPointerCapture(e.pointerId)});c.addEventListener("pointermove",e=>{if(!drawing)return;const p=pos(e);ctx.lineTo(p.x,p.y);ctx.stroke()});c.addEventListener("pointerup",()=>drawing=false);c.addEventListener("pointercancel",()=>drawing=false)}
+function setupCanvas(){const c=$("#whiteboard");if(!c)return;const ctx=c.getContext("2d");ctx.strokeStyle="#2563eb";ctx.lineWidth=3;ctx.lineCap="round";if(state.board){const image=new Image();image.onload=()=>ctx.drawImage(image,0,0,c.width,c.height);image.src=state.board}let drawing=false;function pos(e){const r=c.getBoundingClientRect();return{x:(e.clientX-r.left)*c.width/r.width,y:(e.clientY-r.top)*c.height/r.height}}function finish(){if(!drawing)return;drawing=false;try{state.board=c.toDataURL("image/png");save()}catch(error){toast("Could not save this drawing.")}}c.addEventListener("pointerdown",e=>{drawing=true;const p=pos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);c.setPointerCapture(e.pointerId)});c.addEventListener("pointermove",e=>{if(!drawing)return;const p=pos(e);ctx.lineTo(p.x,p.y);ctx.stroke()});c.addEventListener("pointerup",finish);c.addEventListener("pointercancel",finish) }
 function theme(){const dark=localStorage.getItem("worksuite:theme")==="dark";document.body.classList.toggle("dark",dark);$("#themeLabel").textContent=dark?"Dark":"Light"}
 $("#themeToggle").addEventListener("click",()=>{const dark=!document.body.classList.contains("dark");localStorage.setItem("worksuite:theme",dark?"dark":"light");theme()});
 const toolkitScript=document.createElement("script");toolkitScript.src="../shared/toolkit.js";document.body.appendChild(toolkitScript);
