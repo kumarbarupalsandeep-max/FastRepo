@@ -1,4 +1,4 @@
-const CACHE_NAME = "worksuite-shell-v4";
+const CACHE_NAME = "worksuite-shell-v5";
 const APP_FILES = [
   "./",
   "./index.html",
@@ -6,6 +6,7 @@ const APP_FILES = [
   "./js/app.js",
   "./shared/app.css",
   "./shared/app.js",
+  "./shared/toolkit.js",
   "./manifest.webmanifest",
   "./assets/icon.svg"
 ];
