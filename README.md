@@ -1,126 +1,32 @@
 # WorkSuite — Independent Productivity Ecosystem
 
-WorkSuite is a browser-based collection of **52 independent frontend app prototypes**, organized into individual folders and presented through one app launcher. The suite uses the blue-and-white design language from the Daylight To Do project.
+WorkSuite contains **52 independent frontend workspaces** in one searchable launcher. Each app has its own folder and page, a consistent Poppins typography system, original SVG artwork, a shared application engine and local productivity tools.
 
-This repository is for learning, interface research and frontend prototyping. It is **not Microsoft software**, is not affiliated with or endorsed by Microsoft, and does not reuse Microsoft's source code, logos or proprietary assets. Product and service names are referenced only to describe the workflow each independent prototype explores. The code, page names and UI artwork here are independently authored.
+## Workspace groups
 
-## Start here
+Documents and writing, spreadsheets, presentations, notes, communication, local files, forms, task planning, data lists, bookings, media, visual design, diagrams, whiteboards, project tracking, dashboards, automation design, assistant prototypes, safety dashboards, device inventories, identity checklists, customer contacts and publishing.
 
-Open the root `index.html` file to see the WorkSuite app launcher. Each app has its own folder and its own `index.html` page.
+## Shared features in every workspace
 
-## App directory
+Quick notes (edit, duplicate, pin, archive and delete), personal checklists, due dates, reminders, quick links, reusable tags, workspace search, activity history, JSON import/export, CSV export, local backups, backup restore and print view are available alongside the app-specific modules.
 
-| App inspiration / workflow | WorkSuite workspace | Folder |
-|---|---|---|
-| Word | Writer Studio | `word/` |
-| Excel | Grid Studio | `excel/` |
-| PowerPoint | Presentation Studio | `powerpoint/` |
-| Outlook | Mail Desk | `outlook/` |
-| OneNote | Notes Studio | `onenote/` |
-| OneDrive | Cloud Files | `onedrive/` |
-| Teams | Team Chat | `teams/` |
-| Forms | Form Builder | `forms/` |
-| Planner | Plan Board | `planner/` |
-| Lists | Data Lists | `lists/` |
-| Loop | Shared Canvas | `loop/` |
-| SharePoint | Team Portal | `sharepoint/` |
-| Bookings | Booking Desk | `bookings/` |
-| Clipchamp | Video Studio | `clipchamp/` |
-| Designer | Design Canvas | `designer/` |
-| Stream | Media Library | `stream/` |
-| Sway | Story Builder | `sway/` |
-| Visio | Diagram Studio | `visio/` |
-| Whiteboard | Whiteboard | `whiteboard/` |
-| Project | Project Timeline | `project/` |
-| Access | Data Manager | `access/` |
-| Power BI | Insight Dashboard | `power-bi/` |
-| Power Apps | App Builder | `power-apps/` |
-| Power Automate | Flow Builder | `power-automate/` |
-| Copilot-style assistant | AI Companion | `copilot/` |
-| Defender-style security | Safety Centre | `defender/` |
-| Intune | Device Centre | `intune/` |
-| Viva Engage | Community Feed | `viva-engage/` |
-| Viva Insights | Focus Insights | `viva-insights/` |
-| Places | Room Planner | `places/` |
-| Power Pages | Page Builder | `power-pages/` |
-| Publisher-style publishing | Publication Studio | `publisher/` |
-| Exchange | Mail Service Desk | `exchange/` |
-| Identity administration | Identity Centre | `identity/` |
-| Dynamics-style CRM | Customer Desk | `dynamics-365/` |
-| To Do | Daylight To Do | `todo/` |
-| Microsoft 365 Archive-style | Archive Vault | `archive/` |
-| Microsoft 365 Backup-style | Backup Centre | `backup/` |
-| Edge-style browser start page | Browse Studio | `edge/` |
-| Editor-style writing checks | Writing Assistant | `editor/` |
-| Endpoint Manager | Endpoint Desk | `endpoint-manager/` |
-| Enterprise Mobility + Security | Mobility Centre | `enterprise-mobility/` |
-| Microsoft 365 mobile apps | Mobile Hub | `mobile-apps/` |
-| Microsoft 365 Copilot-style | Copilot Workspace | `m365-copilot/` |
-| Windows settings concept | Device Settings | `windows/` |
-| Windows 365-style | Cloud PC | `windows-365/` |
-| Cloud App Security-style | Cloud App Safety | `cloud-app-security/` |
-| Defender for Business-style | Business Protection | `defender-business/` |
-| Defender for Endpoint-style | Endpoint Protection | `defender-endpoint/` |
-| Defender for Identity-style | Identity Protection | `defender-identity/` |
-| Defender for Office 365-style | Mail Protection | `defender-office/` |
-| OneDrive for Business-style | Business Files | `onedrive-business/` |
+## Frontend-only boundaries
 
-The Microsoft 365 catalogue is broad and changes over time. This collection is a broad starter ecosystem, not a guarantee that every Microsoft product, SKU, legacy service or regional offering is represented. Refer to Microsoft's current [apps and services catalogue](https://www.microsoft.com/en-in/microsoft-365/products-apps-services) for the official product list.
+All workspaces are HTML, CSS and JavaScript prototypes. Data is stored in the current browser where supported. There is no backend, login, database, account system, cloud synchronization or real multi-user collaboration.
 
-## Frontend-only scope
-
-For the current phase, all apps are HTML, CSS and JavaScript prototypes. The shared engine and visual system are in `shared/`; the launcher styles and scripts are in `css/` and `js/`.
-
-- No backend, database, login, subscription or multi-user account system.
-- No cloud file uploads or cross-device synchronization.
-- No real email delivery, calendar integrations or live collaboration.
-- No connected AI model or external AI API.
-- No actual device management, malware scanning, security protection or operating-system control.
-- No real cloud desktop, virtual machine or remote session.
-- Demo content is saved in the current browser where supported; some file, canvas and presentation demos are temporary/local.
-- Export actions (for example, CSV or SVG) create files locally in the browser.
-
-The security and AI workspaces are deliberately labelled as demos and must not be treated as real protection or real AI services.
+Email, chat, booking, AI, safety, device management, cloud desktop and automation interactions are local demonstrations only. They do not send real email, connect to live services, scan or protect devices, execute external automations or contact an AI model. Small file previews are local to this browser; larger files may be recorded as metadata only.
 
 ## Run locally
-
-No package install or build step is required.
 
 ```bash
 python -m http.server 8000
 ```
-
 Open `http://localhost:8000`.
 
-## Publish with GitHub Pages
+## Publish
 
-1. Open **Settings → Pages** in this repository.
-2. Select **Deploy from a branch**.
-3. Choose `main` and `/(root)`, then save.
-4. Use the GitHub Pages URL shown by GitHub.
+Configure static hosting to publish the repository root. The launcher is at `/`; each workspace opens at its own folder URL.
 
-The root `sw.js` caches the WorkSuite app shell. The To Do app has its own service worker inside `todo/`.
+## Copyright and branding
 
-## Folder structure
-
-```text
-FastRepo/
-├── index.html                 # WorkSuite app launcher
-├── css/                       # Launcher styles
-├── js/                        # Launcher search, filters and favorites
-├── shared/                    # Shared app engine and app theme
-├── todo/                      # Daylight To Do app (kept as its own app)
-├── word/ excel/ powerpoint/ outlook/ onenote/
-├── onedrive/ teams/ forms/ planner/ lists/ loop/
-├── sharepoint/ bookings/ clipchamp/ designer/ stream/ sway/
-├── visio/ whiteboard/ project/ access/ publisher/
-├── power-bi/ power-apps/ power-automate/ power-pages/
-├── copilot/ m365-copilot/ viva-engage/ viva-insights/
-├── defender/ defender-business/ defender-endpoint/
-├── defender-identity/ defender-office/ cloud-app-security/
-├── intune/ endpoint-manager/ enterprise-mobility/
-├── windows/ windows-365/ edge/ editor/ archive/ backup/
-├── mobile-apps/ places/ exchange/ identity/ onedrive-business/
-├── dynamics-365/
-└── README.md
-```
+Copyright © 2026 WorkSuite. Keep WorkSuite source code, page copy, visual assets, SVG icons and illustrations independently authored. Do not add third-party logos, registered marks, proprietary artwork, copied screenshots or external product branding. Review applicable intellectual-property rights before commercial use. This document is general project guidance, not legal advice.

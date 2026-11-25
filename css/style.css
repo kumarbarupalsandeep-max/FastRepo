@@ -94,3 +94,19 @@ body{font-size:14px;line-height:1.5}
   .app-grid{grid-template-columns:1fr}
   .hero h1{font-size:23px}
 }
+
+.brand-mark-image{width:36px;height:36px;display:block;object-fit:contain}
+.app-card{padding:0;min-height:205px;position:relative;overflow:hidden}
+.app-card-link{display:flex;flex-direction:column;min-height:205px;height:100%;padding:16px;color:inherit;text-decoration:none;min-width:0}
+.card-top{display:flex;align-items:center;justify-content:space-between;min-height:66px;margin-bottom:8px}
+.app-icon{width:43px;height:43px;border-radius:13px;display:grid;place-items:center;background:#edf3ff;color:#2866dc;flex:none}
+.app-icon svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.app-preview{width:86px;height:62px;object-fit:contain;display:block}
+.card-open-mark{margin-left:auto;color:#9bacbf;font-size:13px}
+.app-card h3{font-size:14px;line-height:1.35;margin:7px 0 5px;color:#263750}
+.app-card p{font-size:11px;line-height:1.55;color:#8492a7;margin:0;flex:1}
+.card-foot{font-size:10px;color:#8e9bb0;margin-top:12px}
+.favorite{position:absolute;top:17px;right:17px;z-index:3;border:0;background:transparent;color:#a4b1c4;font-size:17px;cursor:pointer}
+.favorite.active{color:#e0a33a}
+.app-card:hover{transform:translateY(-3px);border-color:#cbdcff;box-shadow:0 12px 24px rgba(31,66,133,.075)}
+@media(max-width:520px){.app-card,.app-card-link{min-height:170px}.app-card-link{padding:12px}.app-preview{width:64px;height:48px}.app-icon{width:36px;height:36px}}
