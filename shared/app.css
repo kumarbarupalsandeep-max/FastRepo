@@ -106,3 +106,5 @@ body{font-size:14px;line-height:1.5}
 .wsk-toast.show{display:block}
 @media(max-width:760px){.wsk-head{display:block}.wsk-top-actions{margin-top:12px}.wsk-grid{grid-template-columns:1fr}.wsk-card{padding:14px}.wsk-search-row{flex-wrap:wrap}.wsk-search-row>input{flex-basis:100%}}
 @media print{.workspace-toolkit-slot{break-inside:avoid}.wsk-card button,.wsk-file-btn,.wsk-search-row,.wsk-form{display:none!important}.wsk-card{border:0}.wsk-grid{grid-template-columns:1fr 1fr}}
+
+.app-brand-image{width:32px;height:32px;display:block;object-fit:contain;flex:none}

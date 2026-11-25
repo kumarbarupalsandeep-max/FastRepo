@@ -1,10 +1,17 @@
 {
-  "name": "WorkSuite — Productivity App Collection",
+  "name": "WorkSuite — Independent Productivity Ecosystem",
   "short_name": "WorkSuite",
-  "description": "Independent productivity app prototypes in one workspace.",
+  "description": "Independent productivity workspaces in one browser-based hub.",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#f5f7fb",
   "theme_color": "#2563eb",
-  "icons": [{"src":"assets/icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
+  "icons": [
+    {
+      "src": "assets/worksuite-mark.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
 }

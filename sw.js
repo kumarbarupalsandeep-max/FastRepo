@@ -8,7 +8,7 @@ const APP_FILES = [
   "./shared/app.js",
   "./shared/toolkit.js",
   "./manifest.webmanifest",
-  "./assets/icon.svg","./assets/icons.svg","./assets/previews/documents.svg","./assets/previews/collaboration.svg","./assets/previews/planning.svg","./assets/previews/media.svg","./assets/previews/automation.svg","./assets/previews/security.svg"
+  "./assets/icon.svg","./assets/worksuite-mark.svg","./assets/icons.svg","./assets/previews/documents.svg","./assets/previews/collaboration.svg","./assets/previews/planning.svg","./assets/previews/media.svg","./assets/previews/automation.svg","./assets/previews/security.svg"
 ];
 
 self.addEventListener("install", (event) => {
@@ -21,7 +21,7 @@ self.addEventListener("activate", (event) => {
     caches.keys().then((keys) =>
       Promise.all(
         keys
-          .filter((key) => key !== CACHE_NAME && key !== "daylight-todo-shell-v1")
+          .filter((key) => key !== CACHE_NAME && key !== "daylight-todo-shell-v3")
           .map((key) => caches.delete(key))
       )
     )
