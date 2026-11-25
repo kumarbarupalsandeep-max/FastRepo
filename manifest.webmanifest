@@ -1,7 +1,7 @@
 {
-  "name": "Daylight — Daily Planner",
-  "short_name": "Daylight",
-  "description": "A calm, simple place to organize your day.",
+  "name": "WorkSuite — Productivity App Collection",
+  "short_name": "WorkSuite",
+  "description": "Independent productivity app prototypes in one workspace.",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#f5f7fb",
