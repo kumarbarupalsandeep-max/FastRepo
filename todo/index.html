@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#2563eb"><meta name="description" content="A calm, simple place to organize your day and keep track of what matters.">
+  <title>Daylight — My Tasks</title><link rel="icon" href="assets/icon.svg" type="image/svg+xml"><link rel="manifest" href="manifest.webmanifest"><link rel="stylesheet" href="css/style.css"><script src="js/app.js" defer></script>
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand-row"><a class="brand" href="#" aria-label="Daylight home"><span class="brand-mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5 9.2 17 19 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>daylight</span></a><button class="icon-btn sidebar-close" id="sidebarClose" aria-label="Close navigation">×</button></div>
+    <div class="profile-card"><div class="avatar">S</div><div class="profile-copy"><strong>My workspace</strong><span>Personal planner</span></div><span class="online-dot" title="Saved on this device"></span></div>
+    <div class="sidebar-label">WORKSPACE</div>
+    <nav class="main-nav" aria-label="Main navigation">
+      <button class="nav-item active" data-view="my-day"><span class="nav-icon sun-icon">☼</span><span>My Day</span><span class="nav-count" id="count-my-day">0</span></button>
+      <button class="nav-item" data-view="important"><span class="nav-icon star-icon">☆</span><span>Important</span><span class="nav-count" id="count-important">0</span></button>
+      <button class="nav-item" data-view="planned"><span class="nav-icon calendar-icon">▦</span><span>Planned</span><span class="nav-count" id="count-planned">0</span></button>
+      <button class="nav-item" data-view="tasks"><span class="nav-icon tasks-icon">☷</span><span>All tasks</span><span class="nav-count" id="count-tasks">0</span></button>
+    </nav>
+    <div class="lists-heading"><span class="sidebar-label">MY LISTS</span><button class="icon-btn small" id="addListBtn" aria-label="Create a list" title="Create a list">＋</button></div>
+    <nav class="custom-lists" id="customLists" aria-label="Your lists"></nav>
+    <div class="sidebar-bottom">
+      <div class="storage-note"><span class="storage-icon">◈</span><span><strong>Your space, your pace</strong><small>Tasks stay on this device</small></span></div>
+      <button class="nav-item settings-item" id="themeToggle"><span class="nav-icon">◐</span><span>Appearance</span><span class="theme-hint" id="themeHint">Light</span></button>
+    </div>
+  </aside>
+  <main class="main-area">
+    <header class="topbar">
+      <button class="icon-btn menu-toggle" id="menuToggle" aria-label="Open navigation">☰</button>
+      <div class="breadcrumb"><span>Workspace</span><span class="crumb-divider">/</span><strong id="breadcrumbTitle">My Day</strong></div>
+      <div class="topbar-actions"><label class="search-box"><span aria-hidden="true">⌕</span><input id="searchInput" type="search" placeholder="Search tasks..." autocomplete="off" aria-label="Search tasks"><kbd>⌘ K</kbd></label><button class="top-avatar" aria-label="Your profile">S</button></div>
+    </header>
+    <section class="content-wrap">
+      <div class="page-heading"><div><div class="eyebrow" id="todayLabel">YOUR DAY, AT A GLANCE</div><h1 id="pageTitle">My Day <span class="heading-spark">✦</span></h1><p id="pageSubtitle">A fresh start. One task at a time.</p></div><div class="date-chip"><span class="date-chip-icon">▦</span><span id="todayDate"></span></div></div>
+      <section class="summary-strip" aria-label="Task summary">
+        <div class="summary-card"><div class="summary-icon total-icon">☷</div><div><span class="summary-number" id="totalNumber">0</span><span class="summary-label">Total tasks</span></div></div>
+        <div class="summary-card"><div class="summary-icon done-icon">✓</div><div><span class="summary-number" id="doneNumber">0</span><span class="summary-label">Completed</span></div></div>
+        <div class="summary-card progress-card"><div class="progress-copy"><span class="summary-number" id="progressNumber">0%</span><span class="summary-label">Daily progress</span></div><div class="progress-track"><span id="progressBar"></span></div></div>
+      </section>
+      <section class="task-panel">
+        <div class="panel-heading"><div class="panel-title"><h2 id="sectionTitle">Your tasks</h2><span class="task-total" id="visibleCount">0</span></div><div class="filter-tabs" role="group" aria-label="Filter tasks"><button class="filter-tab active" data-filter="all">All</button><button class="filter-tab" data-filter="active">To do</button><button class="filter-tab" data-filter="completed">Done</button></div></div>
+        <form class="add-task-form" id="taskForm"><span class="add-plus">＋</span><input id="taskInput" type="text" maxlength="180" placeholder="Add a task..." aria-label="New task name" required><div class="add-task-options"><label class="date-input-wrap" title="Choose a due date"><span>▦</span><input id="taskDate" type="date" aria-label="Due date"></label><select id="taskListSelect" aria-label="Choose a list"></select><button type="submit" class="add-task-btn">Add task <span>↵</span></button></div></form>
+        <div class="task-list" id="taskList" aria-live="polite"></div><div class="panel-footer" id="panelFooter"><span id="footerHint">Small steps add up. Keep going.</span><button id="clearCompletedBtn" class="text-btn">Clear completed</button></div>
+      </section>
+      <div class="bottom-note"><span>✦</span> Make room for what matters.</div>
+    </section>
+  </main>
+</div>
+<div class="mobile-backdrop" id="mobileBackdrop"></div><div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body></html>
