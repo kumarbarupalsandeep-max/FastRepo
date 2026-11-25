@@ -1,63 +1,71 @@
-# Daylight — Daily Planner
+# WorkSuite — Independent Productivity App Collection
 
-A responsive, browser-based task manager inspired by the simplicity of Microsoft To Do. Daylight is an independent project and is not affiliated with or endorsed by Microsoft.
+This repository contains a set of independent, browser-based productivity app prototypes. The interface uses the same blue-and-white visual theme as the original Daylight task manager.
 
-## Features
+**Important:** This is an independent learning/demo project. It is not Microsoft software, is not affiliated with or endorsed by Microsoft, and does not reproduce Microsoft's source code, logos, or proprietary assets. Product names are used only to identify the kinds of workflows that inspired each prototype. The app experiences use original names and original code.
 
-- **My Day:** Focus on tasks due today.
-- **Important:** Keep starred tasks close.
-- **Planned:** See tasks that have a due date.
-- **All tasks:** Browse every task across your lists.
-- **Custom lists:** Create and remove lists for different areas of life.
-- **Task actions:** Add, complete, star, and delete tasks.
-- **Due dates:** Set dates and see today, tomorrow, and overdue labels.
-- **Search and filters:** Find tasks and switch between All, To do, and Done.
-- **Progress summary:** Track completion at a glance.
-- **Dark mode:** Switch between light and dark appearance.
-- **Local persistence:** Tasks and lists are stored in this browser using localStorage.
-- **Offline shell:** A service worker caches the app shell after the first online visit.
+## App collection
+
+The Microsoft 365 product catalogue changes over time and includes many apps and services. This repository focuses on a broad selection of productivity app categories shown in Microsoft's public app and services catalogue. It is not a complete implementation of every Microsoft product.
+
+| Inspiration / category | Independent app folder |
+|---|---|
+| Word | `word/` — Writer Studio |
+| Excel | `excel/` — Grid Studio |
+| PowerPoint | `powerpoint/` — Presentation Studio |
+| Outlook / Exchange | `outlook/`, `exchange/` — Mail Desk / Mail Service Desk |
+| OneNote | `onenote/` — Notes Studio |
+| OneDrive | `onedrive/` — Cloud Files |
+| Teams | `teams/` — Team Chat |
+| Forms | `forms/` — Form Builder |
+| Planner | `planner/` — Plan Board |
+| Lists | `lists/` — Data Lists |
+| Loop | `loop/` — Shared Canvas |
+| SharePoint | `sharepoint/` — Team Portal |
+| Bookings | `bookings/` — Booking Desk |
+| Clipchamp / Stream | `clipchamp/`, `stream/` — Video Studio / Media Library |
+| Designer | `designer/` — Design Canvas |
+| Sway | `sway/` — Story Builder |
+| Visio | `visio/` — Diagram Studio |
+| Whiteboard | `whiteboard/` — Whiteboard |
+| Project | `project/` — Project Timeline |
+| Access | `access/` — Data Manager |
+| Power BI | `power-bi/` — Insight Dashboard |
+| Power Apps | `power-apps/` — App Builder |
+| Power Automate | `power-automate/` — Flow Builder |
+| Copilot | `copilot/` — AI Companion prototype |
+| Defender / Intune | `defender/`, `intune/` — Safety Centre / Device Centre |
+| Viva Engage / Insights | `viva-engage/`, `viva-insights/` — Community Feed / Focus Insights |
+| Places | `places/` — Room Planner |
+| Power Pages | `power-pages/` — Page Builder |
+| Publisher | `publisher/` — Publication Studio |
+| Dynamics 365-style CRM | `dynamics-365/` — Customer Desk |
+| Identity administration | `identity/` — Identity Centre |
+
+## Daylight To Do
+
+The original Daylight task manager has been retained inside **`todo/`**. Its HTML, CSS, JavaScript, manifest, offline service worker, and icon are kept together in that folder.
 
 ## Run locally
 
-No build tools or package installation are required.
+No build step is needed. Open the root `index.html` file in a browser. For offline/service-worker testing, serve the repository with a local HTTP server:
 
-1. Download or clone this repository.
-2. Open the index.html file in a browser.
+```bash
+python -m http.server 8000
+```
 
-For service-worker/offline testing, serve the folder through a local HTTP server, for example:
+Then visit `http://localhost:8000`.
 
-    python -m http.server 8000
+## GitHub Pages
 
-Then open http://localhost:8000.
+Enable Pages under repository Settings → Pages → Deploy from a branch → `main` → `/(root)`. The root page is the app launcher, and every app folder has its own `index.html`.
 
-## Publish with GitHub Pages
+## Current implementation limits
 
-1. Open the repository Settings → Pages.
-2. Under Build and deployment, choose Deploy from a branch.
-3. Select the main branch and root folder, then save.
-4. Open the published URL shown by GitHub Pages.
+These are frontend prototypes, not complete Microsoft 365 replacements. Most demos save their sample data in the current browser using localStorage. There is no authentication, backend, cloud sync, real email delivery, live collaboration, real security scanning, or connected AI model. File/media tools keep local file metadata or previews; they do not provide a cloud storage or video transcoding service.
 
-## Data and privacy
+## Official product reference
 
-This first version is frontend-only. It does not send tasks to a server. Data is saved in the browser profile on the device where the app is used. Clearing browser site data will remove locally saved tasks. There is no account sync or cross-device backup yet.
+Microsoft's public catalogue of apps and services: https://www.microsoft.com/microsoft-365/products-apps-services
 
-## Project structure
-
-    FastRepo/
-    ├── index.html
-    ├── manifest.webmanifest
-    ├── sw.js
-    ├── assets/
-    │   └── icon.svg
-    ├── css/
-    │   └── style.css
-    └── js/
-        └── app.js
-
-## Next development stage
-
-- Task editing and drag-and-drop ordering
-- Recurring reminders and notifications
-- User accounts and cloud synchronization
-- Shared lists and task assignment
-- Backend API and database
+Use this repository to study interface patterns and build original tools, not to impersonate Microsoft or reuse protected brand assets.
