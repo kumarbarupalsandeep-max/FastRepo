@@ -175,6 +175,7 @@ function handleAction(action,button){
  if(action==="delete-note")remove("notes");
  if(action==="delete-file")remove("files");
  if(action==="delete-question")remove("questions");
+ if(action==="delete-node")remove("nodes");
  if(action==="delete-bookmark")remove("bookmarks");
  if(action==="delete-recovery")remove("recovery");
  if(action==="delete-board-task")remove("tasks");
@@ -202,7 +203,7 @@ function handleAction(action,button){
   const csv=rows.map(row=>row.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(",")).join("\r\n");
   download(new Blob([csv],{type:"text/csv"}),"worksuite-records.csv");
  }
- if(["delete-sent","delete-note","delete-file","delete-question","delete-bookmark","delete-recovery","delete-board-task","delete-record","delete-block","delete-post","cancel-booking","delete-flow","delete-device","delete-section","delete-contact","delete-project-task","delete-field","clear-chat","run-flow","follow-up"].includes(action)){
+ if(["delete-sent","delete-note","delete-file","delete-question","delete-bookmark","delete-recovery","delete-board-task","delete-record","delete-block","delete-post","cancel-booking","delete-flow","delete-device","delete-section","delete-contact","delete-project-task","delete-field","delete-node","clear-chat","run-flow","follow-up"].includes(action)){
   save();refreshWorkspace();
  }
 }
@@ -219,7 +220,7 @@ $("#workspace").addEventListener("click",e=>{
 $("#workspace").addEventListener("submit",e=>{
  const form=e.target.closest("form[data-form]");if(!form)return;e.preventDefault();
  const d=Object.fromEntries(new FormData(form));const type=form.dataset.form;
- if(type==="add-bookmark")state.bookmarks=[...(state.bookmarks||[]),{id:uid(),title:d.title,url:d.url}];
+ if(type==="add-bookmark"){if(!(d.url.startsWith("https://")||d.url.startsWith("http://"))){toast("Use a valid HTTP or HTTPS address.");return}state.bookmarks=[...(state.bookmarks||[]),{id:uid(),title:d.title,url:d.url}]}
  if(type==="archive-point")state.recovery=[{id:uid(),label:d.label,date:new Date().toLocaleString()},...(state.recovery||[])];
  if(type==="send-mail")state.sent.unshift({id:uid(),to:d.to,subject:d.subject,body:d.body});
  if(type==="add-note")state.notes.unshift({id:uid(),title:d.title,body:d.body});
@@ -238,6 +239,7 @@ $("#workspace").addEventListener("submit",e=>{
  if(type==="add-field")state.fields.push({id:uid(),label:d.label,type:d.type});
  if(type==="assistant-chat"){state.chatLog.push({id:uid(),who:"You",text:d.text});let reply="This is a local preview only. Connect an AI provider and backend to generate live answers.";if(/task|plan/i.test(d.text))reply="Try breaking your goal into smaller tasks, then assign each one a due date.";else if(/hello|hi/i.test(d.text))reply="Hello! I’m a sample assistant interface. No AI model is connected yet.";state.chatLog.push({id:uid(),who:"Demo assistant",text:reply})}
  if(type==="add-contact")state.contacts.unshift({id:uid(),name:d.name,company:d.company,email:d.email});
+ if(type==="rename-node"){const node=state.nodes.find(x=>x.id===d.nodeId);if(node)node.label=d.label}
  if(type==="submit-response"){const answers={};for(const [key,value] of Object.entries(d))if(key.startsWith("answer_"))answers[key.slice(7)]=value;state.responses.unshift({id:uid(),answers,date:new Date().toLocaleString()})}
  if(type==="app-preview"){const answers={};for(const [key,value] of Object.entries(d))if(key.startsWith("field_"))answers[key.slice(6)]=value;state.formSubmissions.unshift({id:uid(),answers,date:new Date().toLocaleString()})}
  if(type==="add-post"||type==="announcement"||type==="add-story"){if(!Array.isArray(state.posts))state.posts=[]}
@@ -260,6 +262,7 @@ $("#workspace").addEventListener("change",e=>{
  if(e.target.id==="designColor"){state.designColor=e.target.value;$("#designHeadline")?.style.setProperty("color",e.target.value);$("#designCard")?.style.setProperty("border-top","7px solid "+e.target.value);save()}
  if(e.target.dataset.projectStatus){const task=state.tasks.find(x=>x.id===e.target.dataset.projectStatus);if(task){task.status=e.target.value;save();refreshWorkspace()}}
  if(e.target.dataset.deviceStatus){const device=state.devices.find(x=>x.id===e.target.dataset.deviceStatus);if(device){device.status=e.target.value;save();refreshWorkspace()}}
+ if(e.target.dataset.preference){state.preferences=state.preferences||{};state.preferences[e.target.dataset.preference]=e.target.checked;save();toast("Demo preference saved locally")}
 });
 function formatSize(bytes){if(bytes<1024)return bytes+" B";if(bytes<1048576)return (bytes/1024).toFixed(1)+" KB";return (bytes/1048576).toFixed(1)+" MB"}
 function setupCanvas(){const c=$("#whiteboard");if(!c)return;const ctx=c.getContext("2d");ctx.strokeStyle="#2563eb";ctx.lineWidth=3;ctx.lineCap="round";if(state.board){const image=new Image();image.onload=()=>ctx.drawImage(image,0,0,c.width,c.height);image.src=state.board}let drawing=false;function pos(e){const r=c.getBoundingClientRect();return{x:(e.clientX-r.left)*c.width/r.width,y:(e.clientY-r.top)*c.height/r.height}}function finish(){if(!drawing)return;drawing=false;try{state.board=c.toDataURL("image/png");save()}catch(error){toast("Could not save this drawing.")}}c.addEventListener("pointerdown",e=>{drawing=true;const p=pos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);c.setPointerCapture(e.pointerId)});c.addEventListener("pointermove",e=>{if(!drawing)return;const p=pos(e);ctx.lineTo(p.x,p.y);ctx.stroke()});c.addEventListener("pointerup",finish);c.addEventListener("pointercancel",finish) }
