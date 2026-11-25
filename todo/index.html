@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#2563eb"><meta name="description" content="A calm, simple place to organize your day and keep track of what matters.">
-  <title>Daylight — My Tasks</title><link rel="icon" href="assets/icon.svg" type="image/svg+xml"><link rel="manifest" href="manifest.webmanifest"><link rel="stylesheet" href="css/style.css"><script src="js/app.js" defer></script>
+  <title>Daylight — My Tasks</title><link rel="icon" href="assets/icon.svg" type="image/svg+xml"><link rel="manifest" href="manifest.webmanifest"><link rel="stylesheet" href="css/style.css"><script src="js/app.js" defer></script><script src="../shared/toolkit.js" defer></script>
 </head>
 <body>
 <div class="app-shell">
@@ -42,6 +42,7 @@
         <form class="add-task-form" id="taskForm"><span class="add-plus">＋</span><input id="taskInput" type="text" maxlength="180" placeholder="Add a task..." aria-label="New task name" required><div class="add-task-options"><label class="date-input-wrap" title="Choose a due date"><span>▦</span><input id="taskDate" type="date" aria-label="Due date"></label><select id="taskListSelect" aria-label="Choose a list"></select><button type="submit" class="add-task-btn">Add task <span>↵</span></button></div></form>
         <div class="task-list" id="taskList" aria-live="polite"></div><div class="panel-footer" id="panelFooter"><span id="footerHint">Small steps add up. Keep going.</span><button id="clearCompletedBtn" class="text-btn">Clear completed</button></div>
       </section>
+      <section class="workspace-toolkit-slot" id="worksuiteToolkit"></section>
       <div class="bottom-note"><span>✦</span> Make room for what matters.</div>
     </section>
   </main>
