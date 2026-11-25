@@ -1,6 +1,22 @@
 (() => {
 "use strict";
 const catalog={
+archive:["Archive Vault","Documents","Explore a sample retention and archive workspace.","archive","▤"],
+backup:["Backup Centre","Security & devices","Review sample backup plans and recovery points.","archive","◈"],
+edge:["Browse Studio","Collaboration","A browser-style start page with locally saved bookmarks.","browser","◎"],
+editor:["Writing Assistant","Documents","Review text using simple local writing hints.","proofread","✎"],
+"endpoint-manager":["Endpoint Desk","Security & devices","Review a demo device inventory and management checklist.","device","▣"],
+"enterprise-mobility":["Mobility Centre","Security & devices","An illustrative mobile and device management workspace.","device","▣"],
+"mobile-apps":["Mobile Hub","Collaboration","A responsive collection of quick app shortcuts.","mobile","▦"],
+"m365-copilot":["Copilot Workspace","Power platform","A scripted assistant UI prototype; no AI service is connected.","assistant","✦"],
+windows:["Device Settings","Security & devices","Explore a front-end device settings mockup.","windows","⊞"],
+"windows-365":["Cloud PC","Security & devices","Explore a cloud desktop session mockup; no remote desktop is connected.","windows","▣"],
+"cloud-app-security":["Cloud App Safety","Security & devices","A sample cloud application security dashboard.","security","◇"],
+"defender-business":["Business Protection","Security & devices","A sample business protection checklist; no scanning occurs.","security","◇"],
+"defender-endpoint":["Endpoint Protection","Security & devices","A sample endpoint protection dashboard; no scanning occurs.","security","◇"],
+"defender-identity":["Identity Protection","Security & devices","A sample identity protection checklist.","security","◈"],
+"defender-office":["Mail Protection","Security & devices","A sample email protection dashboard; no mail is inspected.","security","✉"],
+"onedrive-business":["Business Files","Collaboration","A local business file catalogue prototype; no cloud upload occurs.","drive","◫"],
 word:["Writer Studio","Documents","Document workspace for drafts and formatted writing.","editor","W"],
 excel:["Grid Studio","Documents","Spreadsheet workspace with editable cells and CSV export.","grid","▦"],
 powerpoint:["Presentation Studio","Documents","Create slides and present a simple deck.","slides","P"],
@@ -57,6 +73,11 @@ function formInput(name,placeholder,type="text"){return '<input class="field" na
 function toolbar(items,extra=""){return '<div class="module-toolbar">'+items.join("")+'<span class="toolbar-spacer"></span><span class="saved-label">'+extra+'</span></div>'}
 function renderModule(){
  const kind=cfg[3];
+ if(kind==="browser")return '<div class="module-body"><div class="module-heading"><div><h2>Start browsing</h2><p>Saved links are stored locally. This is not a connected browser.</p></div><span class="local-badge">Local bookmarks</span></div><form data-form="add-bookmark" class="form-row">'+formInput("title","Bookmark name")+formInput("url","https://example.com","url")+'<button class="primary-btn">＋ Save bookmark</button></form><div class="module-list">'+(state.bookmarks?.length?state.bookmarks.map(b=>lineItem("◎",b.title,b.url,'<a class="tool-btn" href="'+esc(b.url)+'" target="_blank" rel="noopener noreferrer">Open ↗</a>')).join(""):empty("Save a website link to start your bookmarks."))+'</div></div>';
+ if(kind==="proofread")return '<div class="module-body"><div class="module-heading"><div><h2>Writing review</h2><p>Local text checks for word count, repeated spaces and a few common phrases. Not a full grammar checker.</p></div><span class="local-badge">On-device demo</span></div><textarea class="field-area" id="proofreadText" style="min-height:240px" placeholder="Paste or write your draft here...">'+esc(state.draft||"")+'</textarea><div class="form-row" style="margin-top:10px"><button class="primary-btn" data-action="review-text">Review writing</button><span class="saved-label" id="wordCount"></span></div><div id="writingReport" class="security-note">Your writing stays in this browser.</div></div>';
+ if(kind==="archive")return '<div class="module-body"><div class="module-heading"><div><h2>Retention & recovery</h2><p>Illustrative archive and backup controls. No data is being backed up or retained on a server.</p></div><span class="local-badge">Demo environment</span></div><div class="module-grid"><div class="stat-tile"><span>Archive capacity</span><strong>68%</strong></div><div class="stat-tile"><span>Recovery points</span><strong>'+(state.recovery?.length||0)+'</strong></div><div class="stat-tile"><span>Policy status</span><strong style="font-size:15px">Sample</strong></div></div><form data-form="archive-point" class="form-row" style="margin-top:16px">'+formInput("label","Recovery point label")+'<button class="primary-btn">＋ Add demo point</button></form><div class="module-list">'+(state.recovery?.length?state.recovery.map(x=>lineItem("◈",x.label,x.date)).join(""):empty("No demo recovery points yet."))+'</div></div>';
+ if(kind==="mobile")return '<div class="module-body"><div class="module-heading"><div><h2>Quick access</h2><p>A mobile-friendly app launcher preview.</p></div><span class="local-badge">Responsive demo</span></div><div class="module-grid">'+[["✓","To Do","../../todo/index.html"],["▤","Writer","../../word/index.html"],["▦","Grid","../../excel/index.html"],["◉","Chat","../../teams/index.html"],["✉","Mail","../../outlook/index.html"],["◫","Files","../../onedrive/index.html"]].map(x=>'<a class="stat-tile" style="text-decoration:none" href="'+x[2]+'"><span class="row-icon">'+x[0]+'</span><strong style="font-size:13px">'+x[1]+'</strong></a>').join("")+'</div><p class="inline-hint">These shortcuts open the individual frontend demos in this repository.</p></div>';
+ if(kind==="windows")return '<div class="module-body"><div class="module-heading"><div><h2>Device experience</h2><p>Settings-style interface mockup. It cannot access operating-system settings or create a real remote session.</p></div><span class="local-badge">Illustrative UI</span></div><div class="module-list">'+[["⊞","Display","Screen and scale settings"],["◉","Network","Wi-Fi and connectivity status"],["◇","Privacy","App permission preferences"],["♧","Accounts","Profile and sign-in options"],["↻","Updates","Update status overview"]].map(x=>lineItem(x[0],x[1],x[2],'<span class="device-chip">Mockup</span>')).join("")+'</div><div class="security-note" style="margin-top:15px">Cloud PC mode is a visual prototype only. No remote Windows desktop, OS settings or virtual machine is connected.</div></div>';
  if(kind==="editor")return toolbar(['<button class="tool-btn" data-action="bold"><b>B</b></button>','<button class="tool-btn" data-action="italic"><i>I</i></button>','<button class="tool-btn" data-action="underline"><u>U</u></button>','<button class="tool-btn" data-action="heading">Heading</button>',topButton("save-document","Save locally",true)],"Autosave on this device")+'<div class="module-body"><div class="inline-hint">Independent document prototype · Formatting is stored in this browser</div><div class="editor-paper" id="docEditor" contenteditable="true" spellcheck="true">'+state.document+'</div></div>';
  if(kind==="grid"){
   let rows=state.rows||8,cols=6,letters=["A","B","C","D","E","F"];
@@ -107,6 +128,7 @@ function exportCsv(){
 }
 function download(blob,name){const url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=name;a.click();URL.revokeObjectURL(url)}
 function handleAction(action,button){
+ if(action==="review-text"){const textValue=$("#proofreadText")?.value||"";state.draft=textValue;save();const words=textValue.trim()?textValue.trim().split(/\\s+/).length:0;const findings=[];if(/\\s{2,}/.test(textValue))findings.push("More than one space was found.");if(/\\b(very unique|more better|irregardless)\\b/i.test(textValue))findings.push("Review a commonly misused phrase.");if(textValue&&!/[.!?]$/.test(textValue.trim()))findings.push("Consider ending the last sentence with punctuation.");$("#wordCount").textContent=words+" words";$("#writingReport").textContent=findings.length?findings.join(" "):"No basic demo checks were triggered. Review the text manually before sharing."}
  if(action==="save-document"){save();toast("Document saved in this browser")}
  if(action==="bold"||action==="italic"||action==="underline"||action==="heading"){const commands={bold:"bold",italic:"italic",underline:"underline",heading:"formatBlock"};document.execCommand(commands[action],false,action==="heading"?"h2":undefined);$("#docEditor")?.focus();save()}
  if(action==="add-row"){state.rows=(state.rows||8)+1;save();$("#workspace").innerHTML=renderModule()}
@@ -126,6 +148,8 @@ $("#workspace").addEventListener("click",e=>{
 $("#workspace").addEventListener("submit",e=>{
  const form=e.target.closest("form[data-form]");if(!form)return;e.preventDefault();
  const d=Object.fromEntries(new FormData(form));const type=form.dataset.form;
+ if(type==="add-bookmark")state.bookmarks=[...(state.bookmarks||[]),{id:uid(),title:d.title,url:d.url}];
+ if(type==="archive-point")state.recovery=[{id:uid(),label:d.label,date:new Date().toLocaleString()},...(state.recovery||[])];
  if(type==="send-mail")state.sent.unshift({id:uid(),to:d.to,subject:d.subject,body:d.body});
  if(type==="add-note")state.notes.unshift({id:uid(),title:d.title,body:d.body});
  if(type==="send-chat")state.messages.push({id:uid(),who:"You",text:d.text});
