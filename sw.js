@@ -1,4 +1,4 @@
-const CACHE_NAME = "worksuite-shell-v5";
+const CACHE_NAME = "worksuite-shell-v6";
 const APP_FILES = [
   "./",
   "./index.html",
@@ -8,7 +8,7 @@ const APP_FILES = [
   "./shared/app.js",
   "./shared/toolkit.js",
   "./manifest.webmanifest",
-  "./assets/icon.svg"
+  "./assets/icon.svg","./assets/icons.svg","./assets/previews/documents.svg","./assets/previews/collaboration.svg","./assets/previews/planning.svg","./assets/previews/media.svg","./assets/previews/automation.svg","./assets/previews/security.svg"
 ];
 
 self.addEventListener("install", (event) => {
