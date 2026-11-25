@@ -124,7 +124,8 @@ function renderModule(){
 }
 function shell(){
  document.title=cfg[0]+" — WorkSuite";
- document.body.innerHTML='<div class="workspace-app"><header class="app-topbar"><a class="app-brand" href="../index.html"><span class="app-brand-mark">W</span><span>worksuite</span></a><div class="app-top-actions"><a class="top-link" href="../index.html">← All apps</a><button class="theme-btn" id="themeToggle">◐ <span id="themeLabel">Appearance</span></button></div></header><main class="app-content"><div class="app-intro"><div><div class="app-kicker">'+esc(cfg[1].toUpperCase())+' · WORKSPACE</div><h1>'+esc(cfg[0])+'</h1><p>'+esc(cfg[2])+'</p></div><span class="local-badge">Independent demo · Local data</span></div><section class="workspace-card" id="workspace">'+renderModule()+'</section><div class="module-footer"><span>WorkSuite · Independent prototype</span><span>Data stays in this browser unless you export it</span></div></main><div class="toast" id="toast" role="status"></div></div>';
+ document.body.dataset.workspace=slug;
+  document.body.innerHTML='<div class="workspace-app"><header class="app-topbar"><a class="app-brand" href="../index.html"><span class="app-brand-mark">W</span><span>worksuite</span></a><div class="app-top-actions"><a class="top-link" href="../index.html">← All apps</a><button class="theme-btn" id="themeToggle">◐ <span id="themeLabel">Appearance</span></button></div></header><main class="app-content"><div class="app-intro"><div><div class="app-kicker">'+esc(cfg[1].toUpperCase())+' · WORKSPACE</div><h1>'+esc(cfg[0])+'</h1><p>'+esc(cfg[2])+'</p></div><span class="local-badge">Independent demo · Local data</span></div><section class="workspace-card" id="workspace">'+renderModule()+'</section><section class="workspace-toolkit-slot" id="worksuiteToolkit"></section><div class="module-footer"><span>WorkSuite · Independent prototype</span><span>Data stays in this browser unless you export it</span></div></main><div class="toast" id="toast" role="status"></div></div>';
 }
 function exportCsv(){
  const rows=[["Name","Details","Status"],...state.records.map(r=>[r.name,r.detail,r.status])];
@@ -188,5 +189,6 @@ function formatSize(bytes){if(bytes<1024)return bytes+" B";if(bytes<1048576)retu
 function setupCanvas(){const c=$("#whiteboard");if(!c)return;const ctx=c.getContext("2d");ctx.strokeStyle="#2563eb";ctx.lineWidth=3;ctx.lineCap="round";let drawing=false;function pos(e){const r=c.getBoundingClientRect();return{x:(e.clientX-r.left)*c.width/r.width,y:(e.clientY-r.top)*c.height/r.height}}c.addEventListener("pointerdown",e=>{drawing=true;const p=pos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);c.setPointerCapture(e.pointerId)});c.addEventListener("pointermove",e=>{if(!drawing)return;const p=pos(e);ctx.lineTo(p.x,p.y);ctx.stroke()});c.addEventListener("pointerup",()=>drawing=false);c.addEventListener("pointercancel",()=>drawing=false)}
 function theme(){const dark=localStorage.getItem("worksuite:theme")==="dark";document.body.classList.toggle("dark",dark);$("#themeLabel").textContent=dark?"Dark":"Light"}
 $("#themeToggle").addEventListener("click",()=>{const dark=!document.body.classList.contains("dark");localStorage.setItem("worksuite:theme",dark?"dark":"light");theme()});
+const toolkitScript=document.createElement("script");toolkitScript.src="../shared/toolkit.js";document.body.appendChild(toolkitScript);
 
 })();
