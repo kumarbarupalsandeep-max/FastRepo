@@ -53,7 +53,7 @@ exchange:["Mail Service Desk","Collaboration","A sample mail-service operations 
 identity:["Identity Centre","Security & devices","Review an illustrative identity and access checklist.","security","◈"],
 "dynamics-365":["Customer Desk","Planning","Track sample customer contacts and follow-ups.","crm","◎"]
 };
-const slug=document.body.dataset.app||"word",cfg=catalog[slug]||catalog.word;
+const routeParts=location.pathname.split("/").filter(Boolean);const slug=document.body.dataset.app||routeParts[routeParts.length-2]||routeParts[routeParts.length-1]||"word";const cfg=catalog[slug];if(!cfg){document.body.innerHTML="<main style=\"font:16px system-ui;padding:40px;color:#23314b\"><h1>Workspace unavailable</h1><p>This workspace is not registered.</p><a href=\"../index.html\">Back to WorkSuite</a></main>";throw new Error("Unknown workspace: "+slug)}
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
@@ -140,6 +140,7 @@ function handleAction(action,button){
  if(action==="download-design"){const title=$("#designHeadline")?.textContent||"Your idea";const color=$("#designColor")?.value||"#2563eb";const svg='<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630"><rect width="1200" height="630" rx="24" fill="#f0f5ff"/><rect x="90" y="90" width="1020" height="450" rx="28" fill="#fff"/><text x="150" y="280" font-family="Arial" font-size="58" font-weight="bold" fill="'+color+'">'+esc(title).replace(/[\r\n]/g," ")+'</text><text x="150" y="360" font-family="Arial" font-size="24" fill="#8494ad">Created with WorkSuite Design Canvas</text></svg>';download(new Blob([svg],{type:"image/svg+xml"}),"worksuite-design.svg")}
  if(action==="demo-check"){const out=$("#securityResult");if(out)out.textContent="Demo checklist displayed. No real system or file scan was performed."}
 }
+shell();theme();setupCanvas();
 $("#workspace").addEventListener("click",e=>{
  const move=e.target.closest("[data-move]");if(move){const t=state.tasks.find(x=>x.id===move.dataset.move);if(t){t.status=move.dataset.status;save();$("#workspace").innerHTML=renderModule()}return}
  const slide=e.target.closest("[data-slide]");if(slide){state.activeSlide=Number(slide.dataset.slide);$("#workspace").innerHTML=renderModule();return}
@@ -182,5 +183,5 @@ function formatSize(bytes){if(bytes<1024)return bytes+" B";if(bytes<1048576)retu
 function setupCanvas(){const c=$("#whiteboard");if(!c)return;const ctx=c.getContext("2d");ctx.strokeStyle="#2563eb";ctx.lineWidth=3;ctx.lineCap="round";let drawing=false;function pos(e){const r=c.getBoundingClientRect();return{x:(e.clientX-r.left)*c.width/r.width,y:(e.clientY-r.top)*c.height/r.height}}c.addEventListener("pointerdown",e=>{drawing=true;const p=pos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);c.setPointerCapture(e.pointerId)});c.addEventListener("pointermove",e=>{if(!drawing)return;const p=pos(e);ctx.lineTo(p.x,p.y);ctx.stroke()});c.addEventListener("pointerup",()=>drawing=false);c.addEventListener("pointercancel",()=>drawing=false)}
 function theme(){const dark=localStorage.getItem("worksuite:theme")==="dark";document.body.classList.toggle("dark",dark);$("#themeLabel").textContent=dark?"Dark":"Light"}
 $("#themeToggle").addEventListener("click",()=>{const dark=!document.body.classList.contains("dark");localStorage.setItem("worksuite:theme",dark?"dark":"light");theme()});
-shell();theme();setupCanvas();
+
 })();
