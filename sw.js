@@ -1,4 +1,4 @@
-const CACHE_NAME = "worksuite-shell-v9";
+const CACHE_NAME = "worksuite-shell-v10";
 const APP_FILES = [
   "./index.html",
   "./css/style.css",
@@ -72,7 +72,7 @@ const APP_FILES = [
   "./virtual-desktop/index.html",
   "./writer-studio/index.html",
   "./writing-assistant/index.html",
-  "./writing-assistant/"
+
 ];
 
 self.addEventListener("install", (event) => {
