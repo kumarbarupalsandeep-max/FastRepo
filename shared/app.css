@@ -263,3 +263,11 @@ body.dark .app-data-detail,body.dark .app-page-header p,body.dark .app-section-h
 }
 @media(max-width:430px){.app-brand span{display:none}.app-topbar{gap:6px}.app-top-actions .theme-btn{font-size:0;width:34px;padding:0;justify-content:center}.app-top-actions .theme-btn:before{content:"◐";font-size:16px}.app-page-header h1{font-size:23px}.app-metric-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.app-metric-card>small{font-size:7px}.app-overview-hero h2{font-size:17px}}
 @media print{.app-sidebar,.app-topbar,.app-page-header,.workspace-toolkit-slot,.module-footer{display:none!important}.workspace-app{display:block}.app-content{padding:0}.workspace-card{border:0;box-shadow:none}}
+
+.workspace-app.hide-tips .inline-hint{display:none!important}
+.workspace-app.hide-tips .app-info-strip{display:none!important}
+body.dark .app-feature-icon{background:#223753;color:#a8c6ff}
+body.dark .app-metric-card{background:#172337;border-color:#2a3a52}
+body.dark .app-metric-card>b{color:#e3ebf8}
+body.dark .app-overview-illustration{background:#1d304b;border-color:#344966;color:#91b8ff}
+body.dark .app-data-toolbar p,body.dark .app-data-footnote,body.dark .app-mini-status{color:#91a2ba}
