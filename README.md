@@ -45,3 +45,6 @@ Configure static hosting to publish the repository root. The launcher is at `/`;
 ## Copyright and branding
 
 Copyright © 2026 WorkSuite. Keep WorkSuite source code, page copy, visual assets, SVG icons and illustrations independently authored. Do not add third-party logos, registered marks, proprietary artwork, copied screenshots or external product branding. Review applicable intellectual-property rights before commercial use. This document is general project guidance, not legal advice.
+## Quality review
+
+See [QA-REPORT.md](QA-REPORT.md) for the static audit, fixes and remaining browser-level verification.
