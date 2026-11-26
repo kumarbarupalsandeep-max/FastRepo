@@ -6,6 +6,21 @@ WorkSuite contains **52 independent frontend workspaces** in one searchable laun
 
 Documents and writing, spreadsheets, presentations, notes, communication, local files, forms, task planning, data lists, bookings, media, visual design, diagrams, whiteboards, project tracking, dashboards, automation design, assistant prototypes, safety dashboards, device inventories, identity checklists, customer contacts and publishing.
 
+## App page structure and navigation
+
+Each of the 51 shared-engine workspaces opens with its own responsive app shell:
+
+1. **Overview** — workspace summary, saved-item counts, recent activity and app-specific feature cards.
+2. **Main workspace** — the primary editor, board, inbox, builder, dashboard or other app-specific module.
+3. **Data library** — the items, records, files, notes, messages, questions, bookings or other data belonging to that app.
+4. **Activity** — a local history of actions and form submissions.
+5. **Settings** — compact layout, helper tips, reset confirmation, start-page preference and JSON backup.
+6. **Help & guides** — module guidance and local-demo boundaries.
+
+The top bar includes workspace search, appearance controls and a shortcut back to the launcher. The app-specific side navigation becomes a mobile drawer on smaller screens. **Quick tools** opens shared notes, checklists, reminders, links, tags, search, activity, import/export and backup features.
+
+The Daylight Planner workspace keeps its own focused navigation for **My Day, Important, Planned, All tasks and custom lists**, alongside the shared Quick tools section.
+
 ## Shared features in every workspace
 
 Quick notes (edit, duplicate, pin, archive and delete), personal checklists, due dates, reminders, quick links, reusable tags, workspace search, activity history, JSON import/export, CSV export, local backups, backup restore and print view are available alongside the app-specific modules.
