@@ -1,4 +1,4 @@
-const CACHE_NAME = "worksuite-shell-v10";
+const CACHE_NAME = "worksuite-shell-v11";
 const APP_FILES = [
   "./index.html",
   "./css/style.css",
