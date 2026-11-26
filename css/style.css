@@ -110,3 +110,27 @@ body{font-size:14px;line-height:1.5}
 .favorite.active{color:#e0a33a}
 .app-card:hover{transform:translateY(-3px);border-color:#cbdcff;box-shadow:0 12px 24px rgba(31,66,133,.075)}
 @media(max-width:520px){.app-card,.app-card-link{min-height:170px}.app-card-link{padding:12px}.app-preview{width:64px;height:48px}.app-icon{width:36px;height:36px}}
+
+
+/* App launcher cards: clearer hierarchy, refined surfaces and accessible focus */
+.app-card{border:1px solid #dfe7f3;background:linear-gradient(160deg,#fff 0%,#fbfcff 100%);border-radius:17px;box-shadow:0 5px 18px rgba(27,48,84,.045);transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+.app-card-link{position:relative;isolation:isolate;gap:0}
+.app-card-link:focus-visible{outline:3px solid #8bb4ff;outline-offset:-4px;border-radius:16px}
+.card-top{position:relative;min-height:68px;margin:0 0 12px;padding:0 2px}
+.app-icon{box-shadow:inset 0 0 0 1px rgba(255,255,255,.75);width:46px;height:46px}
+.app-preview{width:88px;height:64px;filter:saturate(.94);opacity:.94}
+.card-open-mark{display:grid;place-items:center;width:27px;height:27px;border-radius:9px;background:#f1f5fc;color:#7d91b0;font-size:15px;transition:transform .2s ease,background .2s ease,color .2s ease}
+.app-card h3{margin:5px 0 7px;font-size:14px;letter-spacing:-.15px;color:#20314d}
+.app-card p{font-size:11px;line-height:1.65;color:#7d8ba2;max-width:34ch}
+.card-foot{padding-top:11px;margin-top:auto;border-top:1px solid #f0f3f8;font-weight:600;color:#8a9ab2}
+.card-foot span:first-child{display:inline-flex;align-items:center;gap:6px}
+.card-foot span:first-child:before{content:"";width:5px;height:5px;border-radius:50%;background:#9bb8ef}
+.favorite{top:13px;right:13px;width:30px;height:30px;border-radius:9px;background:rgba(255,255,255,.88);display:grid;place-items:center;font-size:17px;line-height:1;backdrop-filter:blur(8px)}
+.app-card:hover{transform:translateY(-4px);border-color:#b9d0fb;box-shadow:0 15px 32px rgba(35,78,150,.11)}
+.app-card:hover .card-open-mark{background:#eaf1ff;color:#2563eb;transform:translate(2px,-2px)}
+.app-card:hover .app-preview{opacity:1;transform:translateY(-2px)}
+.app-card:focus-within{border-color:#9bbcf7;box-shadow:0 0 0 3px #dce9ff}
+body.dark .app-card{background:linear-gradient(160deg,#172337,#142033);border-color:#2b3b53}
+body.dark .app-card h3{color:#e7edf8}body.dark .app-card p{color:#9eacc1}
+body.dark .card-foot{border-color:#26364c}body.dark .card-open-mark{background:#22344e;color:#a8c3f7}
+@media(max-width:520px){.card-top{min-height:58px;margin-bottom:9px}.app-preview{width:66px;height:50px}.app-icon{width:39px;height:39px}.app-card p{line-height:1.55}.favorite{top:10px;right:10px}}
