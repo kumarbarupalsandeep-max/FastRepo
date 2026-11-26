@@ -93,7 +93,7 @@ function getDataEntries(){
  else if(kind==="editor")add([{id:"document",title:"Current document",detail:(state.document||"").replace(/<[^>]*>/g," ").replace(/\s+/g," ").slice(0,240),status:"Autosaved"}],"","document");
  else if(kind==="grid")Object.entries(state.cells||{}).filter(([,value])=>String(value).trim()).forEach(([key,value])=>output.push({id:key,title:"Cell "+key,detail:String(value),status:"Saved",icon:"grid"}));
  else if(kind==="slides")add(state.slides,"","slides");
- else if(kind==="mail"){add(state.inbox,"","mail");add((state.sent||[]).map(x=>({...x,title:x.subject,detail:"To "+x.to,status:"Sent draft"})),"delete-sent","mail")}
+ else if(kind==="mail"){add((state.inbox||[]).map(x=>({...x,title:x.subject||"Inbox message"})),"","mail");add((state.sent||[]).map(x=>({...x,title:x.subject,detail:"To "+x.to,status:"Sent draft"})),"delete-sent","mail")}
  else if(kind==="notes")add(state.notes,"delete-note","note");
  else if(kind==="drive"||kind==="video")add(state.files,"delete-file","cloud");
  else if(kind==="chat")add(state.messages.map(x=>({...x,title:x.who,detail:x.text,status:"Message"})),"","chat");
@@ -262,6 +262,7 @@ function handleAction(action,button){
 }
 function refreshWorkspace(){renderAppView();}
 shell();theme();renderAppView();
+document.addEventListener("input",e=>{if(e.target.id==="appPageSearch"){appPageQuery=e.target.value;applyAppPageSearch()}});
 document.addEventListener("click",e=>{
  const nav=e.target.closest("[data-app-view]");if(nav){state.activeView=nav.dataset.appView;save();renderAppView();const app=document.getElementById("workspaceApp");if(app)app.classList.remove("nav-open");return}
  const toolkit=e.target.closest("[data-scroll-toolkit]");if(toolkit){document.getElementById("worksuiteToolkit")?.scrollIntoView({behavior:"smooth",block:"start"});const app=document.getElementById("workspaceApp");if(app)app.classList.remove("nav-open");return}
@@ -302,13 +303,13 @@ $("#workspace").addEventListener("submit",e=>{
  if(type==="submit-response"){const answers={};for(const [key,value] of Object.entries(d))if(key.startsWith("answer_"))answers[key.slice(7)]=value;state.responses.unshift({id:uid(),answers,date:new Date().toLocaleString()})}
  if(type==="app-preview"){const answers={};for(const [key,value] of Object.entries(d))if(key.startsWith("field_"))answers[key.slice(6)]=value;state.formSubmissions.unshift({id:uid(),answers,date:new Date().toLocaleString()})}
  if(type==="add-post"||type==="announcement"||type==="add-story"){if(!Array.isArray(state.posts))state.posts=[]}
- if(type==="app-settings"){state.appSettings={compactMode:!!d.compactMode,showTips:!!d.showTips,confirmDelete:!!d.confirmDelete,startView:d.startView||"home"}}
+ if(type==="app-settings"){state.appSettings={compactMode:!!d.compactMode,showTips:!!d.showTips,confirmDelete:!!d.confirmDelete,startView:d.startView||"home"};state.activeView=state.appSettings.startView}
  trackActivity("Saved changes",type==="app-settings"?"Workspace preferences":type.replace(/-/g," "));
  save();refreshWorkspace();toast("Saved in this browser");
 });
 $("#workspace").addEventListener("input",e=>{
  if(e.target.id==="docEditor"){state.document=e.target.innerHTML;save()}
- if(e.target.id==="appPageSearch"){appPageQuery=e.target.value;applyAppPageSearch()}
+ 
  if(e.target.id==="dataFilter"){const value=e.target.value.toLowerCase();document.querySelectorAll("#workspace .app-data-row").forEach(row=>row.hidden=!row.dataset.searchText.includes(value))}
  if(e.target.dataset.cell){state.cells[e.target.dataset.cell]=e.target.innerText;save()}
  if(e.target.id==="designTitle"){state.designTitle=e.target.value;const headline=$("#designHeadline");if(headline)headline.textContent=e.target.value;save()}
