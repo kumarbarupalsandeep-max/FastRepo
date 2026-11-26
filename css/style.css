@@ -140,3 +140,9 @@ body.dark .card-foot{border-color:#26364c}body.dark .card-open-mark{background:#
 .app-preview{display:none!important}
 .card-top{justify-content:flex-start;min-height:58px}
 .card-open-mark{margin-left:auto}
+
+
+/* Launcher card cleanup: hide decorative preview artwork and corner open glyph */
+.app-card .app-preview,
+.app-card .card-open-mark{display:none!important}
+.app-card .card-top{min-height:48px}
