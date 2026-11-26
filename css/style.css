@@ -134,3 +134,9 @@ body.dark .app-card{background:linear-gradient(160deg,#172337,#142033);border-co
 body.dark .app-card h3{color:#e7edf8}body.dark .app-card p{color:#9eacc1}
 body.dark .card-foot{border-color:#26364c}body.dark .card-open-mark{background:#22344e;color:#a8c3f7}
 @media(max-width:520px){.card-top{min-height:58px;margin-bottom:9px}.app-preview{width:66px;height:50px}.app-icon{width:39px;height:39px}.app-card p{line-height:1.55}.favorite{top:10px;right:10px}}
+
+
+/* Remove the decorative center preview tile from launcher cards */
+.app-preview{display:none!important}
+.card-top{justify-content:flex-start;min-height:58px}
+.card-open-mark{margin-left:auto}
